@@ -93,7 +93,7 @@ diagramEl.addEventListener('click', e => {
 
 // loads the model
 const modelProgressBar = new ProgressBar('model-working', 0, false)
-document.body.insertAdjacentElement('beforebegin', modelProgressBar.createDom())
+document.body.insertAdjacentElement('afterbegin', modelProgressBar.createDom())
 
 const model = new LocalModel('collagan')
 console.time('initialize-model')

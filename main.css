@@ -152,6 +152,10 @@ main {
     grid-template-rows: var(--character-cell) var(--character-cell) calc(var(--character-cell) / 4 * 5);
     grid-template-columns: repeat(3, var(--character-cell));
     position: relative;
+
+    &:hover:not(:has(.example-cell:hover)) .example-image {
+        scale: 1.1;
+    }
 }
 
 .example-cell {
@@ -176,12 +180,17 @@ main {
     width: var(--character-width);
     height: var(--character-width);
     image-rendering: pixelated;
+    transition: scale 200ms ease;
 
     #dataset-display & {
         position: relative;
         top: -25%;
         left: -50%;
         pointer-events: none;
+    }
+
+    .example-cell:hover & {
+        scale: 1.1;
     }
 }
 
@@ -360,18 +369,19 @@ main {
     --progress-bar-color: white;
     --progress-bar-bgcolor: rgb(163, 203, 203);
     position: absolute;
-    inset: 0 0 0 calc(-1 * var(--progress-bar-thickness));
     background-color: var(--progress-bar-bgcolor);
 }
 
 .ai-progress-bar.horizontal {
     width: var(--progress-bar-length);
     height: var(--progress-bar-thickness);
+    inset: 0;
 }
 
 .ai-progress-bar.vertical {
     height: var(--progress-bar-length);
     width: var(--progress-bar-thickness);
+    inset: 0 0 0 calc(-1 * var(--progress-bar-thickness));
 }
 
 .ai-progress-bar.hidden {
