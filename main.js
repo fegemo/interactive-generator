@@ -74,8 +74,8 @@ diagramEl.addEventListener('click', e => {
         
         // write (0.5, 0.5, 0.5, 0.5) color to every pixel as that's what a blank image is to the network
         // (it becomes (0, 0, 0, 0) after normalization between [-1, 1])
-        const grayTensor = tf.ones([64, 64, 4]).mul(0.5)
-        const grayImageData = new ImageData(grayTensor.dataSync(), 64, 64)
+        const grayTensor = tf.ones([64, 64, 4]).mul(127)
+        const grayImageData = new ImageData(Uint8ClampedArray.from(grayTensor.dataSync()), 64, 64)
         inputImageEl.getContext('2d').putImageData(grayImageData, 0, 0)
     }
 
