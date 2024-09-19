@@ -1,4 +1,4 @@
-import { ComputedProgressObservable } from '../observable.js'
+import { ComputedProgressObservable } from './observable.js'
 
 export class ProgressBar {
     #name

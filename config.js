@@ -1,4 +1,4 @@
-import { zipDistinct } from '../functional-util.js'
+import { zipDistinct } from './functional-util.js'
 
 export const DOMAINS = {
   front: 'front',
