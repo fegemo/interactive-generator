@@ -231,7 +231,7 @@ export class LocalModel extends ModelProxy {
 
     static async checkIfModelIsCached(modelName) {
         const savedModels = await tf.io.listModels()
-        return Object.keys(savedModels).find(key => key.includes(modelName))
+        return Object.keys(savedModels).some(key => key.includes(modelName))
     }
         
 }
