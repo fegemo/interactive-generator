@@ -3,12 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Generator</title>
+    <title>Interactive Character Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxygen&family=SUSE&display=swap">
     <link rel="stylesheet" href="main.css">
     <script src="main.js" defer type="module"></script>
+    <meta name="author" content="Flávio Coutinho">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#dddddd">
+    <meta name="color-scheme" content="light only">
+    <meta name="title" content="Interactive Character Generator">
+    <meta name="description" content="Interactive character generator from the paper 'A Missing Data Imputation GAN for Character Sprite Generation', published in SBGames 2024. ">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fegemo.github.io/interactive-generator">
+    <meta property="og:title" content="Interactive Character Generator">
+    <meta property="og:description" content="Interactive character generator from the paper 'A Missing Data Imputation GAN for Character Sprite Generation', published in SBGames 2024. ">
+    <meta property="og:image" content="https://fegemo.github.io/interactive-generator/social-banner.webp">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fegemo.github.io/interactive-generator/">
+    <meta property="twitter:title" content="Interactive Character Generator">
+    <meta property="twitter:description" content="Interactive character generator from the paper 'A Missing Data Imputation GAN for Character Sprite Generation', published in SBGames 2024. ">
+    <meta property="twitter:image" content="https://fegemo.github.io/interactive-generator/social-banner.webp">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
 </head>
 <body>
     <main>
@@ -4351,6 +4373,7 @@
                 </svg>
             </div>
             <div id="generation-controls">
+                <button id="load-model">Load Model (400MB)</button>
                 <button id="generate">Generate</button>
             </div>
         </div>

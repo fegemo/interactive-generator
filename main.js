@@ -91,39 +91,61 @@ diagramEl.addEventListener('click', e => {
 
 
 
+// check if model already in cache...
+if (LocalModel.checkIfModelIsCached('collagan')) {
+    document.querySelector('#load-model').innerHTML = 'Load Model (from cache)'
+}
+
 // loads the model
-const modelProgressBar = new ProgressBar('model-working', 0, false)
-document.body.insertAdjacentElement('afterbegin', modelProgressBar.createDom())
-
-const model = new LocalModel('collagan')
-console.time('initialize-model')
-const tasks = await model.initialize()
-modelProgressBar.watchProgress(tasks.map(t => t.progress))
-await Promise.allSettled(tasks.map(t => t.done))
-console.timeEnd('initialize-model')
-
-document.querySelector('#generate').addEventListener('click', async () => {
-    const diagramEl = document.querySelector('#diagram')
-    const sourceImages = [
-        diagramEl.querySelector('#image-input-back'),
-        diagramEl.querySelector('#image-input-left'),
-        diagramEl.querySelector('#image-input-front'),
-        diagramEl.querySelector('#image-input-right')
-    ]
-    const targetImageEl = document.querySelector('#output-image')
-
-    const targetDomainEls = Array.from(document.querySelectorAll('.target-domain'))
-    const targetDomain = targetDomainEls.find(el => el.querySelector('tspan').textContent === '1').dataset.side
-    const sourceDomains = ['back', 'left', 'front']
-
-    const generator = model.selectGenerator(sourceDomains, targetDomain)
-    const task = generator.createGenerationTask(sourceDomains, targetDomain)
-    modelProgressBar.watchProgress([task.progress])
-    const content = await task.run(sourceImages)
-
-    const { pixels, width, height } = content
-    const imageData = new ImageData(pixels, width, height)
-    const ctx = targetImageEl.getContext('2d')
-    ctx.clearRect(0, 0, targetImageEl.width, targetImageEl.height)
-    ctx.putImageData(imageData, 0, 0)
+document.querySelector('#load-model').addEventListener('click', async (e) => {
+    const loadEl = e.target
+    loadEl.disabled = true
+    loadEl.innerHTML = 'Loading...'
+    try {
+        await loadModel()
+        loadEl.innerHTML = 'Model Loaded'
+    } catch (e) {
+        console.error(e)
+        loadEl.disabled = false
+        loadEl.innerHTML = 'Load Model'
+    }
 })
+
+async function loadModel() {
+    const modelProgressBar = new ProgressBar('model-working', 0, false)
+    document.body.insertAdjacentElement('afterbegin', modelProgressBar.createDom())
+    
+    const model = new LocalModel('collagan')
+    console.time('initialize-model')
+    const tasks = await model.initialize()
+    modelProgressBar.watchProgress(tasks.map(t => t.progress))
+    await Promise.allSettled(tasks.map(t => t.done))
+    console.timeEnd('initialize-model')
+    
+    document.querySelector('#generate').addEventListener('click', async () => {
+        const diagramEl = document.querySelector('#diagram')
+        const sourceImages = [
+            diagramEl.querySelector('#image-input-back'),
+            diagramEl.querySelector('#image-input-left'),
+            diagramEl.querySelector('#image-input-front'),
+            diagramEl.querySelector('#image-input-right')
+        ]
+        const targetImageEl = document.querySelector('#output-image')
+    
+        const targetDomainEls = Array.from(document.querySelectorAll('.target-domain'))
+        const targetDomain = targetDomainEls.find(el => el.querySelector('tspan').textContent === '1').dataset.side
+        const sourceDomains = ['back', 'left', 'front']
+    
+        const generator = model.selectGenerator(sourceDomains, targetDomain)
+        const task = generator.createGenerationTask(sourceDomains, targetDomain)
+        modelProgressBar.watchProgress([task.progress])
+        const content = await task.run(sourceImages)
+    
+        const { pixels, width, height } = content
+        const imageData = new ImageData(pixels, width, height)
+        const ctx = targetImageEl.getContext('2d')
+        ctx.clearRect(0, 0, targetImageEl.width, targetImageEl.height)
+        ctx.putImageData(imageData, 0, 0)
+    })
+
+}

@@ -3,6 +3,11 @@ import { AsyncTask, dynamicImport, TaskAbortion } from './task.js'
 import { detensorize } from './tf-util.js'
 import { ModelProxy, GeneratorProxy } from './model-proxy.js'
 
+
+// loads tensorflow as soon as someone imports this module
+const tf = await dynamicImport('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.1.0/dist/tf.js', 'tf')
+
+
 export class LocalModel extends ModelProxy {
     #tfLoaded
 
@@ -13,10 +18,6 @@ export class LocalModel extends ModelProxy {
     }
 
     async initialize() {
-        // loads tensorflow
-        this.#tfLoaded = dynamicImport('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.1.0/dist/tf.js', 'tf')
-        this.tf = await this.#tfLoaded
-
         // loads all checkpoints from this architecture
         const checkpoints = this.config.checkpoints
 
@@ -24,12 +25,12 @@ export class LocalModel extends ModelProxy {
             this._generators[domain] = {}
         }
 
-        const loadModelTasks = checkpoints.map(ckpt => new LocalModel.LoadModelTask(this.tf, ckpt))
+        const loadModelTasks = checkpoints.map(ckpt => new LocalModel.LoadModelTask(tf, ckpt))
         const promises = loadModelTasks.map(task => task.run())
 
         for (let promise of promises) {
             promise.then(({ model, ckpt }) => {
-                const generator = new LocalGenerator(this, model, this.tf)
+                const generator = new LocalGenerator(this, model, tf)
                 this._generators[ckpt.source][ckpt.target] = generator
             }).catch(error => {
                 if (error instanceof TaskAbortion) {
@@ -46,7 +47,7 @@ export class LocalModel extends ModelProxy {
     }
 
     async warmup(model) {
-        const zeros = model.inputs.map(input => this.tf.zeros([1, ...input.shape.slice(1)]))
+        const zeros = model.inputs.map(input => tf.zeros([1, ...input.shape.slice(1)]))
         model.predict(zeros).dispose()
         zeros.forEach(z => z.dispose())
         return model
@@ -227,6 +228,12 @@ export class LocalModel extends ModelProxy {
             }
         }
     }
+
+    static async checkIfModelIsCached(modelName) {
+        const savedModels = await tf.io.listModels()
+        return Object.keys(savedModels).find(key => key.includes(modelName))
+    }
+        
 }
 
 class LocalGenerator extends GeneratorProxy {
