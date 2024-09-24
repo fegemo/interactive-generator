@@ -93,7 +93,7 @@ diagramEl.addEventListener('click', e => {
 
 // check if model already in cache...
 if (await LocalModel.checkIfModelIsCached('collagan')) {
-    document.querySelector('#load-model').innerHTML = 'Load Model (from cache)'
+    document.querySelector('#load-model').innerHTML = 'Load Model <small>(from cache)</small>'
 }
 
 // loads the model
