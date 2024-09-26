@@ -446,4 +446,49 @@ main {
 }
 
 
+.contain-progressbar {
+    position: relative;
+    overflow: hidden;
+    --progress-bar-value: 0;
 
+    > span {
+        position: relative;
+        z-index: 1;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(90deg, #87ee82, #a3ffc6, #87ee82);
+        width: calc(var(--progress-bar-value, 0) * 100%);
+        translate: 0% 0;
+        z-index: 0;
+        background-size: 200%;
+        background-repeat: repeat-x;
+        background-position-x: 0%;
+        animation-name: none;
+        transition: width 50ms ease-out, opacity 200ms linear 750ms;
+        border-right: 1px solid #a3ffc6;
+        opacity: 0;
+        box-sizing: border-box;
+        pointer-events: none;
+    }
+    
+    &.transition::before {
+        opacity: 1;
+        transition-property: none;
+        animation: backgrounding 2s linear infinite;;
+    }
+}
+
+
+@keyframes backgrounding {
+    0% {
+        background-position-x: 0%;
+    }
+
+    100% {
+        background-position-x: 200%;
+    }   
+}

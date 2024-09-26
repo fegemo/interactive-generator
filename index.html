@@ -4373,8 +4373,12 @@
                 </svg>
             </div>
             <div id="generation-controls">
-                <button id="load-model">Load Model <small>(400MB)</small></button>
-                <button id="generate">Generate</button>
+                <button id="load-model" class="contain-progressbar">
+                    <span>Load Model <small>(400MB)</small></span>
+                </button>
+                <button id="generate" class="contain-progressbar" disabled>
+                    <span>Generate</span>
+                </button>
             </div>
         </div>
 

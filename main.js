@@ -92,36 +92,44 @@ diagramEl.addEventListener('click', e => {
 
 
 // check if model already in cache...
-if (await LocalModel.checkIfModelIsCached('collagan')) {
-    document.querySelector('#load-model').innerHTML = 'Load Model <small>(from cache)</small>'
+const isModelCached = await LocalModel.checkIfModelIsCached('collagan')
+if (isModelCached) {
+    document.querySelector('#load-model > span').innerHTML = 'Load Model <small>(from cache)</small>'
 }
 
 // loads the model
 document.querySelector('#load-model').addEventListener('click', async (e) => {
-    const loadEl = e.target
+    const loadEl = e.currentTarget
+    const loadContentEl = e.currentTarget.querySelector('span')
     loadEl.disabled = true
-    loadEl.innerHTML = 'Loading...'
+    loadContentEl.innerHTML = isModelCached ? 'Loading...' : 'Downloading...'
     try {
         await loadModel()
-        loadEl.innerHTML = 'Model Loaded'
+        loadContentEl.innerHTML = 'Model Loaded'
     } catch (e) {
         console.error(e)
         loadEl.disabled = false
-        loadEl.innerHTML = 'Load Model'
+        loadContentEl.innerHTML = 'Load Model <small>(400MB)</small>'
     }
 })
 
 async function loadModel() {
-    const modelProgressBar = new ProgressBar('model-working', 0, false)
+    const modelProgressBar = new ProgressBar('model-working')
+    const loadProgressBar = new ProgressBar('model-loading', 0.05)
+    const generateProgressBar = new ProgressBar('model-generating', 0.15)
     document.body.insertAdjacentElement('afterbegin', modelProgressBar.createDom())
+    loadProgressBar.attachDom(document.querySelector('#load-model'))
+    generateProgressBar.attachDom(document.querySelector('#generate'))
     
     const model = new LocalModel('collagan')
     console.time('initialize-model')
     const tasks = await model.initialize()
     modelProgressBar.watchProgress(tasks.map(t => t.progress))
+    loadProgressBar.watchProgress(tasks.map(t => t.progress))
     await Promise.allSettled(tasks.map(t => t.done))
     console.timeEnd('initialize-model')
     
+    document.querySelector('#generate').disabled = false
     document.querySelector('#generate').addEventListener('click', async () => {
         const diagramEl = document.querySelector('#diagram')
         const sourceImages = [
@@ -139,6 +147,7 @@ async function loadModel() {
         const generator = model.selectGenerator(sourceDomains, targetDomain)
         const task = generator.createGenerationTask(sourceDomains, targetDomain)
         modelProgressBar.watchProgress([task.progress])
+        generateProgressBar.watchProgress([task.progress])
         const content = await task.run(sourceImages)
     
         const { pixels, width, height } = content
@@ -147,5 +156,4 @@ async function loadModel() {
         ctx.clearRect(0, 0, targetImageEl.width, targetImageEl.height)
         ctx.putImageData(imageData, 0, 0)
     })
-
 }
