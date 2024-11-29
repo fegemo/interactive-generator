@@ -120,6 +120,14 @@ main {
     }
 }
 
+.clickable-activation-map {
+    cursor: pointer;
+
+    g:has(> &:hover) {
+        stroke-width: 3px;
+    }
+}
+
 #dataset-display {
     flex: 1 0 fit-content;
     display: flex;
@@ -225,6 +233,80 @@ main {
     &:active {
         cursor: grabbing;
     }
+}
+
+.modal {
+    position: absolute;
+    inset: auto 1em 1em 7em;
+    color: #858585;
+    border: 1px solid currentColor;
+    background-color: #fff3;
+    backdrop-filter: blur(5px);
+    border-radius: 4px;
+    box-shadow: 4px 4px 4px #0003;
+    resize: horizontal;
+    overflow: auto;
+    z-index: 100;
+    padding-top: 0.5em;
+
+    &:popoveropen {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.modal-title,
+.modal-footer {
+    font-size: 0.75em;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    border-radius: inherit;
+    font-size: 0.5em;
+    aspect-ratio: 1;
+    background-color: transparent;
+    border-width: 0;
+    color: currentColor;
+    transition: background-color 80ms ease-out;
+
+    &:hover {
+        background-color: #0001;
+    }
+}
+
+.modal-content {
+    padding: 0;
+    min-width: 5em;
+}
+
+#modal-debugging .modal-content {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.activation-map-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.activation-map {
+    image-rendering: pixelated;
+    width: 128px;
+    height: 128px;
+}
+
+.activation-map-info {
+    font-size: 0.75em;
+    text-align: center;
+}
+
+#modal-debugging .modal-footer {
+    align-self: flex-end;
 }
 
 

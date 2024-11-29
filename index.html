@@ -1975,6 +1975,16 @@
                         </g>
                     </g>
                     <g
+                        data-cell-id="FNUsES6niwyITNyZzEtN-64"
+                        id="g7040">
+<g id="g7020">
+                        <path d="m 281,543 h 14 l 46,46 v 117 h -14 l -46,-46 z" fill="#f8cecc" stroke="#b85450" stroke-miterlimit="10" transform="matrix(-1,0,0,1,622,0)" pointer-events="all" id="path6940"></path>
+                        <path d="M 281 669 L 297 669 L 343 715 L 329 715 Z" fill-opacity="0.05" fill="#000000" stroke="none" transform="matrix(-1,0,0,1,622,0)" pointer-events="all" id="path6960"></path>
+                        <path d="m 281,543 46,46 v 117 l -46,-46 z" fill-opacity="0.1" fill="#000000" stroke="none" transform="matrix(-1,0,0,1,622,0)" pointer-events="all" id="path6980"></path>
+                        <path d="M 327,706 V 589 l -46,-46 m 46,46 h 14" fill="none" stroke="#b85450" stroke-miterlimit="10" transform="matrix(-1,0,0,1,622,0)" pointer-events="all" id="path7000"></path>
+                        </g>
+                    </g>                    
+                    <g
                         data-cell-id="FNUsES6niwyITNyZzEtN-81"
                         id="g900">
                         <g
@@ -4371,6 +4381,36 @@
                     </g>
                 </g>
                 </svg>
+                <dialog class="modal" id="modal-debugging">
+                    <div class="modal-header">
+                        <div class="modal-title"></div>
+                        <button class="modal-close">✖</button>
+                    </div>
+                    <div class="modal-content">
+                        <div class="activation-map-container">
+                            <canvas class="activation-map" data-map-index="0"></canvas>
+                            <div class="activation-map-info"></div>
+                        </div>
+                        <div class="activation-map-container">
+                            <canvas class="activation-map" data-map-index="1"></canvas>
+                            <div class="activation-map-info"></div>
+                        </div>
+                        <div class="activation-map-container">
+                            <canvas class="activation-map" data-map-index="2"></canvas>
+                            <div class="activation-map-info"></div>
+                        </div>
+                        <div class="activation-map-container">
+                            <canvas class="activation-map" data-map-index="3"></canvas>
+                            <div class="activation-map-info"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <nav class="activation-map-controls">
+                            <button class="navigate-map" data-direction="-1">«</button>
+                            <button class="navigate-map" data-direction="1">»</button>
+                        </nav>
+                    </div>
+                </dialog>
             </div>
             <div id="generation-controls">
                 <button id="load-model" class="contain-progressbar">
