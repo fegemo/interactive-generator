@@ -1,4 +1,4 @@
-import interact from 'https://cdn.interactjs.io/v1.10.14/interactjs/index.js'
+import interact from 'interact.js'
 import { callOrReturn } from './functional-util.js'
 
 class DragDropObject {
